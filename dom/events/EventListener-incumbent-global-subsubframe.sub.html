@@ -8,10 +8,15 @@
     if (e.data == "sendclick") {
       document.body.click();
     } else {
+      let expectedOrigin = "{{location[scheme]}}://{{domains[www1]}}:{{ports[http][0]}}";
+      if ("{{location[scheme]}}" == "http" &&
+          "{{ports[http][0]}}" == "80") {
+        expectedOrigin = "{{location[scheme]}}://{{domains[www1]}}";
+      }
       parent.postMessage(
         {
           actual: e.origin,
-          expected: "{{location[scheme]}}://{{domains[www1]}}:{{ports[http][0]}}",
+          expected: expectedOrigin,
           reason: "Incumbent should have been the caller of addEventListener()"
         },
         "*")
